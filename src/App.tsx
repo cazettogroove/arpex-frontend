@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-function App() {
+export const App: FC = () => {
   return (
     <div>
-        <a
-          href="http://www.arpexcapital.com.br/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Arpex
-        </a>
+      <a
+        href="http://www.arpexcapital.com.br/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Arpex
+      </a>
     </div>
   );
-}
-
-export default App;
+};
