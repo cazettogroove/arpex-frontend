@@ -20,6 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "pre-push": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "lint": " npx eslint src/**/*.{ts,tsx} --fix",
     "prepare": "husky install",
