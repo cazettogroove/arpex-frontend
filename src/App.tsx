@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Button from '@material-ui/core/Button';
 
 export const App: FC = () => {
   return (
@@ -10,6 +11,10 @@ export const App: FC = () => {
       >
         Arpex
       </a>
+
+      <Button variant="contained" color="primary">
+        Hello Material
+      </Button>
     </div>
   );
 };
