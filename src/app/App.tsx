@@ -1,20 +1,13 @@
 import React, { FC } from 'react';
-import Button from '@material-ui/core/Button';
+import { Routes, Route } from 'react-router-dom';
+import { LoginPage } from '../pages/Login/LoginPage';
+import { DashboardPage } from '../pages/Dashboard/DashboardPage';
 
 export const App: FC = () => {
   return (
-    <div>
-      <a
-        href="http://www.arpexcapital.com.br/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Arpex
-      </a>
-
-      <Button variant="contained" color="primary">
-        Hello Material
-      </Button>
-    </div>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+    </Routes>
   );
 };
