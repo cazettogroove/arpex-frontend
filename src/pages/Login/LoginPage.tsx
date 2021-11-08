@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import Box from '@material-ui/core/Box';
-import { Button } from '../../components/Button/Button';
-import { InputText } from '../../components/InputText/InputText';
-import { Text } from '../../components/Text/Text';
+import { Button } from 'components/Button/Button';
+import { InputText } from 'components/InputText/InputText';
+import { Text } from 'components/Text/Text';
 
 const TEXT_PAGE_NAME = 'Fazer login';
 const TEXT_USER_FIELD_LABEL = 'Usuário';

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { LoginPage } from '../pages/Login/LoginPage';
-import { DashboardPage } from '../pages/Dashboard/DashboardPage';
+import { LoginPage } from 'pages/Login/LoginPage';
+import { DashboardPage } from 'pages/Dashboard/DashboardPage';
 import { theme } from './theme';
-import { Text } from '../components/Text/Text';
+import { Text } from 'components/Text/Text';
 
 const TEXT_SITE_NAME = 'Arpex';
 
