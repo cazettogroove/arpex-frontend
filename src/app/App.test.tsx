@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { App } from './App';
 
-test('renders Arpex link', () => {
+import { TEXT_SITE_NAME } from './App';
+
+test('renders page', () => {
   render(<App />);
-  const linkElement = screen.getByText(/Arpex/i);
-  expect(linkElement).toBeInTheDocument();
+  const siteName = screen.getByText(TEXT_SITE_NAME);
+  expect(siteName).toBeInTheDocument();
 });

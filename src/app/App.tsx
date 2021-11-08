@@ -6,7 +6,7 @@ import { DashboardPage } from 'pages/Dashboard/DashboardPage';
 import { theme } from './theme';
 import { Text } from 'components/Text/Text';
 
-const TEXT_SITE_NAME = 'Arpex';
+export const TEXT_SITE_NAME = 'Arpex';
 
 export const App: FC = () => {
   return (
