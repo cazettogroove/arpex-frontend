@@ -20,9 +20,11 @@ export const login = createAsyncThunk(
         const refreshToken = session.getRefreshToken().getToken();
         return { accessToken, idToken, refreshToken };
       } catch (error) {
+        console.log(error);
         return { errorMessage: JSON.stringify(error) };
       }
     } catch (error) {
+      console.log(error);
       return { errorMessage: JSON.stringify(error) };
     }
   }

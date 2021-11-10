@@ -9,6 +9,7 @@ import { DashboardPage } from 'features/Dashboard/DashboardPage';
 import { theme } from './theme';
 import { Text } from 'components/Text/Text';
 import { amplifyConfig } from 'config/amplify';
+import { PrivateRoute } from 'features/User/components/PrivateRoute';
 
 export const TEXT_SITE_NAME = 'Arpex';
 
@@ -22,7 +23,10 @@ export const App: FC = () => {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route
+              path="/dashboard"
+              element={<PrivateRoute element={<DashboardPage />} />}
+            />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
