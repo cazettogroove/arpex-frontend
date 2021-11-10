@@ -7,6 +7,7 @@ interface Props {
   disabled?: boolean;
   fullWidth?: boolean;
   color?: 'primary' | 'secondary';
+  type: string;
 }
 
 export const Button: FC<Props> = (props) => {
@@ -16,6 +17,7 @@ export const Button: FC<Props> = (props) => {
     disabled = false,
     fullWidth = false,
     color = 'primary',
+    type,
   } = props;
   return (
     <MuiButton
@@ -25,6 +27,7 @@ export const Button: FC<Props> = (props) => {
       size="medium"
       variant="contained"
       color={color}
+      type={type}
     >
       {children}
     </MuiButton>
