@@ -38,13 +38,21 @@ export const LoginPage: FC = () => {
 
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    if ((!!username && username !== '') || (!!password && password !== '')) {
+    if (!!username || !!password) {
       dispatch(login({ username, password }));
       resetFormFields();
     }
   };
 
-  return !user.success ? (
+  if (user.changePasswordRequired) {
+    return <Navigate to="/change-password" />;
+  }
+
+  if (user.success) {
+    return <Navigate to="/" />;
+  }
+
+  return (
     <Box display="flex" justifyContent="center">
       <Box maxWidth="500px">
         <Text type="H1">{TEXT_PAGE_TITLE}</Text>
@@ -69,7 +77,5 @@ export const LoginPage: FC = () => {
         </form>
       </Box>
     </Box>
-  ) : (
-    <Navigate to="/" />
   );
 };

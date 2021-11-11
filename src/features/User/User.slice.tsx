@@ -1,28 +1,80 @@
 import { Auth } from 'aws-amplify';
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
+const NEW_PASSWORD_REQUIRED = 'NEW_PASSWORD_REQUIRED';
+
 interface LoginParameters {
   username: string;
   password: string;
 }
 
+interface ChangePasswordParameters {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export const login = createAsyncThunk(
-  'users/login',
+  'user/login',
   async (data: LoginParameters) => {
     const { username, password } = data;
     try {
       const user = await Auth.signIn(username, password);
-      console.log(user);
+      console.log('user', user);
+      if (user.challengeName === NEW_PASSWORD_REQUIRED) {
+        alert('aqui ' + user.challengeName);
+        return { changePasswordRequired: true };
+      } else {
+        try {
+          const session = await Auth.currentSession();
+          const accessToken = session.getAccessToken().decodePayload();
+          const idToken = session.getIdToken().decodePayload();
+          const refreshToken = session.getRefreshToken().getToken();
+          return { accessToken, idToken, refreshToken };
+        } catch (error) {
+          console.log(error);
+          return { errorMessage: JSON.stringify(error) };
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      return { errorMessage: JSON.stringify(error) };
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'user/changePassword',
+  async (data: ChangePasswordParameters) => {
+    const { oldPassword, newPassword } = data;
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      console.log('user', user);
       try {
-        const session = await Auth.currentSession();
-        const accessToken = session.getAccessToken().decodePayload();
-        const idToken = session.getIdToken().decodePayload();
-        const refreshToken = session.getRefreshToken().getToken();
-        return { accessToken, idToken, refreshToken };
+        const changedPasswordResult = await Auth.changePassword(
+          user,
+          oldPassword,
+          newPassword
+        );
+
+        console.log(changedPasswordResult);
       } catch (error) {
         console.log(error);
         return { errorMessage: JSON.stringify(error) };
       }
+    } catch (error) {
+      console.log(error);
+      return { errorMessage: JSON.stringify(error) };
+    }
+
+    try {
+      Auth.currentAuthenticatedUser()
+        .then((user) => {
+          Auth.changePassword(user, oldPassword, newPassword);
+        })
+        .then((result) => console.log(result))
+        .catch((error) => console.log(error));
+
+      return { status: true };
     } catch (error) {
       console.log(error);
       return { errorMessage: JSON.stringify(error) };
@@ -37,6 +89,7 @@ export interface UserState {
   success: boolean;
   failed: boolean;
   errorMessage: string;
+  changePasswordRequired?: boolean;
 }
 
 const initialState: UserState = {
@@ -46,6 +99,7 @@ const initialState: UserState = {
   success: false,
   failed: false,
   errorMessage: '',
+  changePasswordRequired: false,
 };
 
 export const userSlice = createSlice({
@@ -74,7 +128,8 @@ export const userSlice = createSlice({
         state.email = email;
       } else {
         state.failed = true;
-        state.errorMessage = action.payload.errorMessage;
+        state.errorMessage = action.payload.errorMessage || '';
+        state.changePasswordRequired = action.payload.changePasswordRequired;
       }
     });
   },
