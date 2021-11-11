@@ -1,13 +1,19 @@
 import React, { ChangeEvent, FC, SyntheticEvent, useState } from 'react';
+import { Auth, Cache } from 'aws-amplify';
+import { useDispatch, useSelector } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import { Button } from 'components/Button/Button';
 import { InputText } from 'components/InputText/InputText';
 import { Text } from 'components/Text/Text';
 import { login, UserState } from 'features/User/User.slice';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/store';
 
 import { Navigate } from 'react-router-dom';
+import { Checkbox } from 'components/Checkbox/Checkbox';
+import {
+  setLocalStorageCache,
+  setSessionStorageCache,
+} from 'features/User/helpers';
 
 export const TEXT_PAGE_TITLE = 'Fazer login';
 const TEXT_USER_FIELD_LABEL = 'Usuário';
@@ -17,6 +23,7 @@ const TEXT_BUTTON_LOG_IN = 'Entrar';
 export const LoginPage: FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [shouldRemember, setShouldRemember] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const user: UserState = useSelector((props: RootState) => {
@@ -29,6 +36,16 @@ export const LoginPage: FC = () => {
 
   const handleChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
+  };
+
+  const handleChangeRememberMe = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setShouldRemember(checked);
+    if (checked) {
+      setLocalStorageCache();
+    } else {
+      setSessionStorageCache();
+    }
   };
 
   const resetFormFields = () => {
@@ -69,6 +86,11 @@ export const LoginPage: FC = () => {
               value={password}
               onChange={handleChangePassword}
               fullWidth
+            />
+            <Checkbox
+              label="Lembrar"
+              checked={shouldRemember}
+              onChange={handleChangeRememberMe}
             />
           </Box>
           <Button disabled={!username || !password} type="submit" fullWidth>

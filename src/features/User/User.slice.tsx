@@ -21,7 +21,6 @@ export const login = createAsyncThunk(
       const user = await Auth.signIn(username, password);
       console.log('user', user);
       if (user.challengeName === NEW_PASSWORD_REQUIRED) {
-        alert('aqui ' + user.challengeName);
         return { changePasswordRequired: true };
       } else {
         try {
