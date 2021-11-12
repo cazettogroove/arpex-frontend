@@ -15,7 +15,7 @@ import {
   setSessionStorageCache,
 } from 'features/User/helpers';
 
-export const TEXT_PAGE_TITLE = 'Fazer login';
+export const TEXT_PAGE_TITLE = 'Login';
 const TEXT_USER_FIELD_LABEL = 'Usuário';
 const TEXT_PASSWORD_FIELD_LABEL = 'Senha';
 const TEXT_BUTTON_LOG_IN = 'Entrar';

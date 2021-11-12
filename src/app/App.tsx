@@ -11,6 +11,7 @@ import { Text } from 'components/Text/Text';
 import { amplifyConfig } from 'config/amplify';
 import { PrivateRoute } from 'features/User/components/PrivateRoute';
 import { ChangePasswordPage } from 'features/ChangePassword/ChangePassword';
+import { Header } from 'components/Header/Header';
 
 export const TEXT_SITE_NAME = 'Arpex';
 
@@ -19,8 +20,8 @@ Amplify.configure(amplifyConfig);
 export const App: FC = () => {
   return (
     <Provider store={store}>
-      <Text type="H1">{TEXT_SITE_NAME}</Text>
       <BrowserRouter>
+        <Header />
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/" element={<div />} />
