@@ -13,6 +13,7 @@ import {
   setLocalStorageCache,
   setSessionStorageCache,
 } from 'features/User/User.helpers';
+import { useCheckAuth } from 'features/User/User.hooks';
 
 export const TEXT_PAGE_TITLE = 'Login';
 const TEXT_USER_FIELD_LABEL = 'Usuário';
@@ -23,6 +24,7 @@ export const LoginPage: FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [shouldRemember, setShouldRemember] = useState<boolean>(false);
+  const isAuthenticated = useCheckAuth();
   const dispatch = useDispatch();
 
   const user: UserState = useSelector((props: RootState) => {
@@ -64,7 +66,7 @@ export const LoginPage: FC = () => {
     return <Navigate to="/change-password" />;
   }
 
-  if (user.success) {
+  if (isAuthenticated || user.success) {
     return <Navigate to="/dashbard" />;
   }
 
