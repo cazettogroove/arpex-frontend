@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, SyntheticEvent, useState } from 'react';
-import { Auth, Cache } from 'aws-amplify';
 import { useDispatch, useSelector } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import { Button } from 'components/Button/Button';

@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 import { Provider } from 'react-redux';
 import Amplify from 'aws-amplify';
 import { store } from './store';
 import { LoginPage } from 'features/Login/LoginPage';
 import { DashboardPage } from 'features/Dashboard/DashboardPage';
 import { theme } from './theme';
-import { Text } from 'components/Text/Text';
 import { amplifyConfig } from 'config/amplify';
 import { PrivateRoute } from 'features/User/components/PrivateRoute';
 import { ChangePasswordPage } from 'features/ChangePassword/ChangePassword';
 import { Header } from 'components/Header/Header';
+import { Sidebar } from 'components/Sidebar/Sidebar';
 
 export const TEXT_SITE_NAME = 'Arpex';
 
@@ -20,9 +21,11 @@ Amplify.configure(amplifyConfig);
 export const App: FC = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Header />
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Header />
+          <Sidebar />
           <Routes>
             <Route path="/" element={<div />} />
             <Route path="/login" element={<LoginPage />} />
@@ -32,8 +35,8 @@ export const App: FC = () => {
               element={<PrivateRoute element={<DashboardPage />} />}
             />
           </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </ThemeProvider>
     </Provider>
   );
 };
