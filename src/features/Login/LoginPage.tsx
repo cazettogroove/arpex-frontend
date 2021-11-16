@@ -24,7 +24,7 @@ export const LoginPage: FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [shouldRemember, setShouldRemember] = useState<boolean>(false);
-  const isAuthenticated = useCheckAuth();
+  const { isAuthenticated } = useCheckAuth();
   const dispatch = useDispatch();
 
   const user: UserState = useSelector((props: RootState) => {

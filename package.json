@@ -25,7 +25,7 @@
     "eject": "react-scripts eject",
     "lint": " npx eslint src/**/*.{ts,tsx} --fix",
     "prepare": "husky install",
-    "commit": "git-cz"
+    "gcm": "git-cz"
   },
   "eslintConfig": {
     "extends": [

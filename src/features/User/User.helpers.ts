@@ -22,11 +22,11 @@ export function setSessionStorageCache(): void {
   });
 }
 
-export async function checkAuth(): Promise<boolean> {
+export async function checkAuth(): Promise<unknown> {
   try {
-    await Auth.currentAuthenticatedUser();
-    return true;
-  } catch {
-    return false;
+    const { attributes } = await Auth.currentAuthenticatedUser();
+    return attributes;
+  } catch (error) {
+    return { error };
   }
 }

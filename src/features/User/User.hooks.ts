@@ -3,17 +3,20 @@ import { checkAuth } from './User.helpers';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useCheckAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<unknown>();
   useEffect(() => {
     async function check() {
       try {
         const result = await checkAuth();
-        setIsAuthenticated(!!result);
+        setUser(result);
       } catch (error) {
-        setIsAuthenticated(false);
+        setUser(null);
       }
     }
     check();
   }, []);
-  return isAuthenticated;
+  return {
+    isAuthenticated: !!user,
+    user,
+  };
 };

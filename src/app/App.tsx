@@ -11,9 +11,9 @@ import { theme } from './theme';
 import { amplifyConfig } from 'config/amplify';
 import { PrivateRoute } from 'features/User/components/PrivateRoute';
 import { ChangePasswordPage } from 'features/ChangePassword/ChangePassword';
-import { Header } from 'components/Header/Header';
+import { Header } from 'features/Header/Header';
 import { Sidebar } from 'components/Sidebar/Sidebar';
-import { Layout } from './components/Layout/Layout';
+import { Layout } from 'features/Layout/Layout';
 
 export const TEXT_SITE_NAME = 'Arpex';
 
