@@ -13,7 +13,7 @@ interface ChangePasswordParameters {
   newPassword: string;
 }
 
-export const login = createAsyncThunk(
+export const signIn = createAsyncThunk(
   'user/login',
   async (data: LoginParameters) => {
     const { username, password } = data;
@@ -40,6 +40,27 @@ export const login = createAsyncThunk(
     }
   }
 );
+
+export const retrieveUser = createAsyncThunk('user/retrieve', async () => {
+  try {
+    const session = await Auth.currentSession();
+    const accessToken = session.getAccessToken().decodePayload();
+    const idToken = session.getIdToken().decodePayload();
+    const refreshToken = session.getRefreshToken().getToken();
+    return { accessToken, idToken, refreshToken };
+  } catch (error) {
+    return { errorMessage: JSON.stringify(error) };
+  }
+});
+
+export const signOut = createAsyncThunk('user/signout', async () => {
+  try {
+    const result = await Auth.signOut();
+    return result;
+  } catch (error) {
+    return { errorMessage: JSON.stringify(error) };
+  }
+});
 
 export const changePassword = createAsyncThunk(
   'user/changePassword',
@@ -82,8 +103,8 @@ export const changePassword = createAsyncThunk(
 );
 
 export interface UserState {
-  username: string;
-  email: string;
+  username: string | null;
+  email: string | null;
   isFetching: boolean;
   success: boolean;
   failed: boolean;
@@ -92,8 +113,8 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  username: '',
-  email: '',
+  username: null,
+  email: null,
   isFetching: false,
   success: false,
   failed: false,
@@ -118,7 +139,7 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.fulfilled, (state, action) => {
+    builder.addCase(signIn.fulfilled, (state, action) => {
       if (action.payload.accessToken && action.payload.idToken) {
         const username = action.payload.accessToken.username;
         const email = action.payload.idToken.email;
@@ -130,6 +151,25 @@ export const userSlice = createSlice({
         state.errorMessage = action.payload.errorMessage || '';
         state.changePasswordRequired = action.payload.changePasswordRequired;
       }
+    });
+    builder.addCase(retrieveUser.fulfilled, (state, action) => {
+      if (action.payload.accessToken && action.payload.idToken) {
+        const username = action.payload.accessToken.username;
+        const email = action.payload.idToken.email;
+        state.success = true;
+        state.username = username;
+        state.email = email;
+      } else {
+        state.failed = true;
+        state.errorMessage = action.payload.errorMessage || '';
+      }
+    });
+    builder.addCase(signOut.fulfilled, (state, action) => {
+      console.log('action', action);
+
+      state.success = true;
+      state.username = null;
+      state.email = null;
     });
   },
 });

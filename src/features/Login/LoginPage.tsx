@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import { Button } from 'components/Button/Button';
 import { InputText } from 'components/InputText/InputText';
 import { Text } from 'components/Text/Text';
-import { login, UserState } from 'features/User/User.slice';
+import { signIn, UserState } from 'features/User/User.slice';
 import { RootState } from 'app/store';
 
 import { Navigate } from 'react-router-dom';
@@ -57,7 +57,7 @@ export const LoginPage: FC = () => {
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     if (!!username || !!password) {
-      dispatch(login({ username, password }));
+      dispatch(signIn({ username, password }));
       resetFormFields();
     }
   };
@@ -66,12 +66,12 @@ export const LoginPage: FC = () => {
     return <Navigate to="/change-password" />;
   }
 
-  if (isAuthenticated || user.success) {
-    return <Navigate to="/dashbard" />;
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" />;
   }
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" paddingTop={8}>
       <Box maxWidth="500px">
         <Text type="H1">{TEXT_PAGE_TITLE}</Text>
         <form onSubmit={handleSubmit}>

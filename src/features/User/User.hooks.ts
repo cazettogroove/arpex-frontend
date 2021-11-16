@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
-import { checkAuth } from './User.helpers';
+import { RootState } from 'app/store';
+import { useSelector } from 'react-redux';
+import { UserState } from './User.slice';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useCheckAuth = () => {
-  const [user, setUser] = useState<unknown>();
-  useEffect(() => {
-    async function check() {
-      try {
-        const result = await checkAuth();
-        setUser(result);
-      } catch (error) {
-        setUser(null);
-      }
-    }
-    check();
-  }, []);
+  const user: UserState = useSelector((state: RootState) => {
+    return state.user;
+  });
   return {
-    isAuthenticated: !!user,
-    user,
+    isAuthenticated: Boolean(user.username),
   };
 };

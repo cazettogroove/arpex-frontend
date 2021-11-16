@@ -21,12 +21,3 @@ export function setSessionStorageCache(): void {
     storage: sessionStorageCache,
   });
 }
-
-export async function checkAuth(): Promise<unknown> {
-  try {
-    const { attributes } = await Auth.currentAuthenticatedUser();
-    return attributes;
-  } catch (error) {
-    return { error };
-  }
-}

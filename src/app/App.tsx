@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import Amplify from 'aws-amplify';
 import { store } from './store';
 import { LoginPage } from 'features/Login/LoginPage';
+import { HomePage } from 'features/Home/HomePage';
 import { DashboardPage } from 'features/Dashboard/DashboardPage';
 import { theme } from './theme';
 import { amplifyConfig } from 'config/amplify';
@@ -30,7 +31,7 @@ export const App: FC = () => {
             sidebar={<Sidebar />}
             content={
               <Routes>
-                <Route path="/" element={<div />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route
                   path="/change-password"

@@ -7,14 +7,18 @@ import {
   Menu,
   MenuItem,
   IconButton,
+  Divider,
 } from '@material-ui/core';
 import { AppBar } from './Header.styled';
 import { Link } from 'react-router-dom';
 import { useCheckAuth } from 'features/User/User.hooks';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { signOut } from 'features/User/User.slice';
+import { useDispatch } from 'react-redux';
 
 export const Header: FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const dispatch = useDispatch();
   const { isAuthenticated } = useCheckAuth();
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -39,6 +43,11 @@ export const Header: FC = () => {
     setAnchorEl(null);
   };
 
+  const handleClickLogout = () => {
+    dispatch(signOut());
+    handleMenuClose();
+  };
+
   const isMenuOpen = Boolean(anchorEl);
   const menuId = 'primary-search-account-menu';
   const renderUserInfoMenu = () => {
@@ -54,6 +63,8 @@ export const Header: FC = () => {
       >
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
         <MenuItem onClick={handleMenuClose}>Configurações</MenuItem>
+        <Divider />
+        <MenuItem onClick={handleClickLogout}>Logout</MenuItem>
       </Menu>
     );
   };

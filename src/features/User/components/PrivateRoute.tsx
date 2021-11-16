@@ -1,16 +1,16 @@
 import React, { FC, ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useCheckAuth } from '../User.hooks';
 
 interface Props {
   element: ReactNode;
 }
 
-function checkAuth() {
-  return false;
-}
-
 export const PrivateRoute: FC<Props> = (props) => {
   const { element } = props;
-  const isAuthenticated = checkAuth();
+  const { isAuthenticated } = useCheckAuth();
+
+  console.log('wat', isAuthenticated);
+
   return isAuthenticated ? <>{element}</> : <Navigate to="/login" />;
 };
