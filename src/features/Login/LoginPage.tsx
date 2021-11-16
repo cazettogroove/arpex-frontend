@@ -12,7 +12,7 @@ import { Checkbox } from 'components/Checkbox/Checkbox';
 import {
   setLocalStorageCache,
   setSessionStorageCache,
-} from 'features/User/helpers';
+} from 'features/User/User.helpers';
 
 export const TEXT_PAGE_TITLE = 'Login';
 const TEXT_USER_FIELD_LABEL = 'Usuário';
@@ -65,7 +65,7 @@ export const LoginPage: FC = () => {
   }
 
   if (user.success) {
-    return <Navigate to="/" />;
+    return <Navigate to="/dashbard" />;
   }
 
   return (

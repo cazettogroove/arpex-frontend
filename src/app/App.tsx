@@ -13,6 +13,7 @@ import { PrivateRoute } from 'features/User/components/PrivateRoute';
 import { ChangePasswordPage } from 'features/ChangePassword/ChangePassword';
 import { Header } from 'components/Header/Header';
 import { Sidebar } from 'components/Sidebar/Sidebar';
+import { Layout } from './components/Layout/Layout';
 
 export const TEXT_SITE_NAME = 'Arpex';
 
@@ -24,17 +25,24 @@ export const App: FC = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <Header />
-          <Sidebar />
-          <Routes>
-            <Route path="/" element={<div />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/change-password" element={<ChangePasswordPage />} />
-            <Route
-              path="/dashboard"
-              element={<PrivateRoute element={<DashboardPage />} />}
-            />
-          </Routes>
+          <Layout
+            header={<Header />}
+            sidebar={<Sidebar />}
+            content={
+              <Routes>
+                <Route path="/" element={<div />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route
+                  path="/change-password"
+                  element={<ChangePasswordPage />}
+                />
+                <Route
+                  path="/dashboard"
+                  element={<PrivateRoute element={<DashboardPage />} />}
+                />
+              </Routes>
+            }
+          />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
