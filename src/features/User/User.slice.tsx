@@ -9,8 +9,8 @@ interface LoginParameters {
 }
 
 interface ChangePasswordParameters {
-  oldPassword: string;
   newPassword: string;
+  user: unknown;
 }
 
 export const signIn = createAsyncThunk(
@@ -20,6 +20,8 @@ export const signIn = createAsyncThunk(
     try {
       const user = await Auth.signIn(username, password);
       if (user.challengeName === NEW_PASSWORD_REQUIRED) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (window as any).user = user;
         return { changePasswordRequired: true };
       } else {
         try {
@@ -27,6 +29,7 @@ export const signIn = createAsyncThunk(
           const accessToken = session.getAccessToken().decodePayload();
           const idToken = session.getIdToken().decodePayload();
           const refreshToken = session.getRefreshToken().getToken();
+
           return { accessToken, idToken, refreshToken };
         } catch (error) {
           console.log(error);
@@ -64,38 +67,19 @@ export const signOut = createAsyncThunk('user/signout', async () => {
 export const changePassword = createAsyncThunk(
   'user/changePassword',
   async (data: ChangePasswordParameters) => {
-    const { oldPassword, newPassword } = data;
+    const { user, newPassword } = data;
     try {
-      const user = await Auth.currentAuthenticatedUser();
-
-      console.log('Auth.currentAuthenticatedUser(): ', user);
-
       try {
         const changedPasswordResult = await Auth.completeNewPassword(
           user,
-          oldPassword,
           newPassword
         );
 
-        console.log(changedPasswordResult);
+        return changedPasswordResult;
       } catch (error) {
         console.log(error);
         return { errorMessage: JSON.stringify(error) };
       }
-    } catch (error) {
-      console.log(error);
-      return { errorMessage: JSON.stringify(error) };
-    }
-
-    try {
-      Auth.currentAuthenticatedUser()
-        .then((user) => {
-          Auth.changePassword(user, oldPassword, newPassword);
-        })
-        .then((result) => console.log(result))
-        .catch((error) => console.log(error));
-
-      return { status: true };
     } catch (error) {
       console.log(error);
       return { errorMessage: JSON.stringify(error) };
@@ -165,9 +149,12 @@ export const userSlice = createSlice({
         state.errorMessage = action.payload.errorMessage || '';
       }
     });
-    builder.addCase(signOut.fulfilled, (state, action) => {
-      console.log('action', action);
-
+    builder.addCase(changePassword.fulfilled, (state, action) => {
+      if (action.payload.username) {
+        state.changePasswordRequired = false;
+      }
+    });
+    builder.addCase(signOut.fulfilled, (state) => {
       state.success = true;
       state.username = null;
       state.email = null;

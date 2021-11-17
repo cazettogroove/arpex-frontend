@@ -10,13 +10,11 @@ import { RootState } from 'app/store';
 import { Navigate } from 'react-router-dom';
 
 export const PAGE_TITLE = 'Alterar senha';
-const LABEL_OLD_PASSWORD_FIELD = 'Senha atual';
 const LABEL_PASSWORD_FIELD = 'Nova senha';
 const LABEL_PASSWORD_CONFIRMATION_FIELD = 'Confirmar nova senha';
 const BUTTON_SAVE = 'Salvar';
 
 export const ChangePasswordPage: FC = () => {
-  const [oldPassword, setOldPassword] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordConfirmation, setNewPasswordConfirmation] =
     useState<string>('');
@@ -25,10 +23,6 @@ export const ChangePasswordPage: FC = () => {
   const user: UserState = useSelector((props: RootState) => {
     return props.user;
   });
-
-  const handleChangeOldPassword = (event: ChangeEvent<HTMLInputElement>) => {
-    setOldPassword(event.target.value);
-  };
 
   const handleChangeNewPassword = (event: ChangeEvent<HTMLInputElement>) => {
     setNewPassword(event.target.value);
@@ -48,7 +42,14 @@ export const ChangePasswordPage: FC = () => {
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     if (!!newPassword || !!newPasswordConfirmation) {
-      dispatch(changePassword({ oldPassword, newPassword }));
+      console.log(user);
+      dispatch(
+        changePassword({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          user: (window as any).user,
+          newPassword,
+        })
+      );
       resetFormFields();
     }
   };
@@ -58,14 +59,6 @@ export const ChangePasswordPage: FC = () => {
       <Box maxWidth="500px">
         <Text type="H1">{PAGE_TITLE}</Text>
         <form onSubmit={handleSubmit}>
-          <Box my={3}>
-            <InputText
-              label={LABEL_OLD_PASSWORD_FIELD}
-              value={oldPassword}
-              onChange={handleChangeOldPassword}
-              fullWidth
-            />
-          </Box>
           <Box my={3}>
             <InputText
               label={LABEL_PASSWORD_FIELD}
